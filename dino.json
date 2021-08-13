@@ -1,6 +1,5 @@
 {
-    "Dinos": [
-        {
+    "Dinos": [{
             "species": "Triceratops",
             "weight": 13000,
             "height": 114,
@@ -10,7 +9,7 @@
             "fact": "First discovered in 1889 by Othniel Charles Marsh"
         },
         {
-            "species": "Tyrannosaurus Rex",
+            "species": "TRex",
             "weight": 11905,
             "height": 144,
             "diet": "carnivor",

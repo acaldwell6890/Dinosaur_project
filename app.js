@@ -1,106 +1,127 @@
-// Create Dino Constructor
-function Dino(species, weight, height, diet, where, when, fact) {
-    this.species = species;
-    this.dinoWeight = weight;
-    this.dinoHeight = height;
-    this.dinoDiet = diet;
-    this.where = where;
-    this.when = when;
-    this.fact = fact;
+function Dino(species, dinoDiet, dinoHeight, dinoWeight, when, where, fact) {
+    this.species = species
+    this.dinoDiet = dinoDiet
+    this.dinoHeight = dinoHeight
+    this.dinoWeight = dinoWeight
+    this.when = when
+    this.where = where
+    this.fact = fact
+        // compare the difference in height of dino and human. Human height converted using equation
+    this.compareHeight = function(humanFeet, humanInches) {
+            totalHeight = Number(humanFeet * 12) + Number(humanInches)
+            heightDiff = dinoHeight - totalHeight
+            return `There's a ${heightDiff} inch difference between you and this dinosaur!`
+        }
+        // compare weight of dino and human then return a comment about that weight
+    this.compareWeight = function(humanWeight) {
+            console.log(humanWeight)
+            weightDiff = Number(dinoWeight) - Number(humanWeight)
+            return `There's a ${Math.abs(weightDiff)} pound difference between you and this dinosaur!`
+        }
+        // compare diet of dino and human. then return one of two different comments.
+    this.compareDiet = function(humanDiet) {
+        if (dinoDiet == humanDiet.toLowerCase()) { //convert capitals to all lower case
+            let result = 'You both eat the same types of food!'
+            return result
+        } else {
+            let result = ` This Dino is a ${dinoDiet}!`
+            return result
+        }
+    }
 }
-// let url = "file:///Users/aaroncaldwell/Desktop/Javascript/dino.json"
-// fetch(url)
-//     .then(res => res.json())
-//     .then(data => console.log(data))
-//     .catch(err => console.log(error))
-// const Triceratops = new Dino("Triceratops", 13000, 114, "herbivore", "North America", "Late Cretaceous", "First discovered in 1889 by Othniel Charles Marsh.")
-// const TRex = new Dino("Tyrannosourus Rex", 11905, 144, "carnivore", "North America", "Late Cretaceous", "The largest known skull measures in at 5 feet long.")
-// const Anklyosaurus = new Dino("Anlyosaurus", 10500, 55, "herbivore", "North America", "Late Cretaceous", "Anklyosaurus survived for approximately 135 million years.")
-// const Brachiosaurus = new Dino("Brachiosaurus", 70000, 372, "herbavor", "North America", "Late Jurassic", "herbivore", "An asteroid was names 9954 Brachiosaurus in 1991.")
-// const Stegosaurus = new Dino("Stegosaurus", 1160, 79, "Herbivore", "North America, Europe, Asia", "Late Jurasic to Early Cretaceous", "The Stegosaurus had between 17 and 22 separate plates and flat spines")
-// const Elasmoaurus = new Dino("Elasmosaurus", 16000, 59, "carnivore", "North America", "late Cretaceous", "Elasmosaurus was a marine reptile first discovered in Kansas.")
-// const Pteranodon = new Dino("Pteranodon", 44, 20, "carnivore", "North America", "Late Cretaceous", "Actually a flying reptile, the Pteranodon is not a dinosaur.")
-// const Pigeon = new Dino("Pigeon", 0.5, 9, "herbivore", "World Wide", "Holocene", "All birds are living dinosaurs.")
+// Creating Dino Array function to be called during button click
+function getDinoArray(dinos) {
+    dinoArray = []
+    dinos.forEach((dino) => {
+        newDinoObject = new Dino(dino.species, dino.diet, dino.height, dino.weight, dino.when, dino.where, dino.fact)
+        dinoArray.push(newDinoObject)
+    });
+    return dinoArray
+}
+//Human Object function with properties to match the form data
+function Human(species, humanDiet, humanWeight, humanFeet, humanInches, fact) {
+    this.species = species
+    this.humanDiet = humanDiet
+    this.humanWeight = humanWeight
+    this.humanFeet = humanFeet
+    this.humanInches = humanInches
+    this.fact = fact
+}
+// Fetch Dinosaur data from json file
+fetch('dino.json')
+    .then(response => response.json())
+    .then(data => {
+        getDinoArray(data.Dinos) //passing array into function
+    })
+    .catch(error => console.log(`There was a data fetch error: ${error}`));
 
 
-// Create Human Object
-function Human(name, feet, inches, weight, diet) {
-    this.humanName = name;
-    this.humanFeet = feet;
-    this.humanInches = inches;
-    this.humanWeight = weight;
-    this.humanDiet = diet;
-}
-// Use IIFE to get human data from form
+// IIFE to retrieve human data
 function getHumanData() {
-    (function pullUserData() {
-        humanName = document.querySelector('#name').value,
-            humanFeet = document.querySelector('#feet').value,
-            humanInches = document.querySelector('#inches').value,
-            humanWeight = document.querySelector('#weight').value,
-            humanDiet = document.querySelector('#diet').value
-        const human = new Human(humanName, humanFeet, humanInches, humanWeight, humanDiet)
-        console.log(human)
+    return (function() {
+        humanName = document.querySelector('#name').value;
+        species = "Human"
+        humanDiet = document.querySelector('#diet').value;
+        humanWeight = document.querySelector('#weight').value;
+        humanFeet = document.querySelector('#feet').value;
+        humanInches = document.querySelector('#inches').value;
+        fact = " "
+            //new human object
+        const human = new Human(species, humanDiet, humanWeight, humanFeet, humanInches, fact)
         return human
-
-    })()
+    })();
 }
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
-function compareHeight(humanFeet, humanInches, dinoHeight) {
-    return
+// generate dino tiles with info pulled from json file
+function generateTiles(animalObject, human) {
+    console.log(animalObject[0])
+    animalObject.splice(4, 0, human)
+    for (let i = 0; i < 9; i++) {
+        creature = animalObject[i]
+        let tDiv = document.createElement('div')
+        tDiv.className = 'grid-item'
+            // creating tag for the tile
+        if (i === 4) {
+            creature.species = document.querySelector('#name').value
+            humanDiet = document.querySelector('#diet').value
+            humanFeet = document.querySelector('#feet').value
+            humanInches = document.querySelector('#inches').value
+            humanWeight = document.querySelector('#weight').value
+            let tile = document.createElement("h2")
+            tile.innerHTML = `<h3>${creature.species}</h3>
+                    <img src="images/human.png" alt = "picture of ${creature.species}"/>`
+            tDiv.appendChild(tile)
+        } else if (i === 8) {
+            let tile = document.createElement("h2")
+            tile.innerHTML = `<h3>${creature.species}</h3>
+                <img src="images/${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
+                <h3>${creature.fact}</h3>`
+            tDiv.appendChild(tile)
+        } else {
+            //generates a random fact and renders in each tile
+            const factNumber = Math.floor(Math.random() * 4) // random number
+            let cCompD = creature.compareDiet(human.humanDiet)
+            let cCompW = creature.compareWeight(human.humanWeight)
+            let cCompH = creature.compareHeight(human.humanFeet, human.humanInches)
+            let genericFact = creature.fact
+            facts = [genericFact, cCompD, cCompW, cCompH]
+            let tile = document.createElement("h2")
+            tile.innerHTML = `<h3>${creature.species}</h3>
+                    <img src="images/${creature.species.toLowerCase()}.png" alt = "picture of ${creature.species}"/>
+                    <h3>${facts[factNumber]}</h3>`
+            tDiv.appendChild(tile)
+        }
+        // create the element on the page
+        document.querySelector("#grid").appendChild(tDiv)
+    }
 }
-
-// Create Dino Compare Method 2
-// NOTE: Weight in JSON file is in lbs, height in inches.
-function compareWeight(humanWeight, dinoWeight) {
-    return
-}
-
-// Create Dino Compare Method 3
-// NOTE: Weight in JSON file is in lbs, height in inches.
-function compareDiet(humanDiet, dinoDiet) {
-    return
-}
-
-// Generate Tiles for each Dino in Array
-
-// Add tiles to DOM
-
-// Remove form from screen
+// remove form
 function removeForm() {
-    document.querySelector('#dino-compare').style.display = 'none'
+    document.querySelector("#dino-compare").style.display = 'none'
 }
-
-// function makeTile() {
-//     let tile_div = document.createElement('div')
-//     tile_div.className = 'grid-item'
-
-//     let textElement = document.createElement('h2')
-//     tile_div.innerText = " "
-//     tile_div.appendChild(textElement)
-
-//     return document.getElementById("grid").appendChild(tile_div)
-// }
-
-// function generateTiles(dinoInfo, humanInfo) {
-//     makeTile(Triceratops.species, Triceratops.fact)
-//     makeTile(TRex.species, TRex.fact)
-//     makeTile(Anklyosaurus.species, Anklyosaurus.fact)
-//     makeTile(Brachiosaurus.species, Brachiosaurus.fact)
-//     makeTile(getHumanData())
-//     makeTile(Stegosaurus.species, Stegosaurus.fact)
-//     makeTile(Elasmoaurus.species, Elasmoaurus.fact)
-//     makeTile(Pigeon.species, Pigeon.fact)
-//     makeTile(Pteranodon.species, Pteranodon.fact)
-// }
-
-// On button click, prepare and display infographic
-let button = document.querySelector('#btn')
-
-button.addEventListener('click', function() {
-    removeForm()
+// On button click, prepare and display tiles
+let button = document.querySelector("#btn")
+button.addEventListener("click", function() {
     getHumanData()
-        //generateTiles()
-    console.log('click')
+    removeForm()
+    generateTiles(dinoArray, getHumanData())
 })
