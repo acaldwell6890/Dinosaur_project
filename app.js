@@ -14,7 +14,6 @@ function Dino(species, dinoDiet, dinoHeight, dinoWeight, when, where, fact) {
         }
         // compare weight of dino and human then return a comment about that weight
     this.compareWeight = function(humanWeight) {
-            console.log(humanWeight)
             weightDiff = Number(dinoWeight) - Number(humanWeight)
             return `There's a ${Math.abs(weightDiff)} pound difference between you and this dinosaur!`
         }
@@ -73,7 +72,6 @@ function getHumanData() {
 }
 // generate dino tiles with info pulled from json file
 function generateTiles(animalObject, human) {
-    console.log(animalObject[0])
     animalObject.splice(4, 0, human)
     for (let i = 0; i < 9; i++) {
         creature = animalObject[i]
